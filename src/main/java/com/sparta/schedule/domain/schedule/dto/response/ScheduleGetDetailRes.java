@@ -7,7 +7,7 @@ import lombok.Builder;
 import java.time.LocalDate;
 
 @Builder(access = AccessLevel.PRIVATE)
-public record ScheduleGetOverallRes(
+public record ScheduleGetDetailRes(
         Long scheduleId,
         String title,
         String todo,
@@ -15,8 +15,8 @@ public record ScheduleGetOverallRes(
         LocalDate createdAt,
         LocalDate updatedAt
 ) {
-    public static ScheduleGetOverallRes from(Schedule schedule) {
-        return ScheduleGetOverallRes.builder()
+    public static ScheduleGetDetailRes from(Schedule schedule) {
+        return ScheduleGetDetailRes.builder()
                 .scheduleId(schedule.getScheduleId())
                 .title(schedule.getTitle())
                 .todo(schedule.getTodo())

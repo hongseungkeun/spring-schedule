@@ -2,7 +2,7 @@ package com.sparta.schedule.api.schedule;
 
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleCreateReq;
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleGetOverallReq;
-import com.sparta.schedule.domain.schedule.dto.response.ScheduleGetOverallRes;
+import com.sparta.schedule.domain.schedule.dto.response.ScheduleGetDetailRes;
 import com.sparta.schedule.domain.schedule.service.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,12 @@ public class ScheduleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ScheduleGetOverallRes>> getSchedules(@RequestBody final ScheduleGetOverallReq request) {
+    public ResponseEntity<List<ScheduleGetDetailRes>> getSchedules(@RequestBody final ScheduleGetOverallReq request) {
         return ResponseEntity.ok(scheduleService.getOverallSchedule(request));
+    }
+
+    @GetMapping("/{scheduleId}")
+    public ResponseEntity<ScheduleGetDetailRes> getSchedule(@PathVariable final Long scheduleId) {
+        return ResponseEntity.ok(scheduleService.getDetailSchedule(scheduleId));
     }
 }
