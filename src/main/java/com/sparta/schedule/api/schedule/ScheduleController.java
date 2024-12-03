@@ -2,7 +2,6 @@ package com.sparta.schedule.api.schedule;
 
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleCreateReq;
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleDeleteReq;
-import com.sparta.schedule.domain.schedule.dto.request.ScheduleReadOverallReq;
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleUpdateReq;
 import com.sparta.schedule.domain.schedule.dto.response.ScheduleReadDetailRes;
 import com.sparta.schedule.domain.schedule.service.ScheduleService;
@@ -31,8 +30,11 @@ public class ScheduleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ScheduleReadDetailRes>> readSchedules(@RequestBody final ScheduleReadOverallReq request) {
-        return ResponseEntity.ok(scheduleService.readOverallSchedule(request));
+    public ResponseEntity<List<ScheduleReadDetailRes>> readSchedules(
+            @RequestParam(required = false) final String updatedAt,
+            @RequestParam(required = false) final String name) {
+
+        return ResponseEntity.ok(scheduleService.readOverallSchedule(updatedAt, name));
     }
 
     @GetMapping("/{scheduleId}")
@@ -41,14 +43,18 @@ public class ScheduleController {
     }
 
     @PatchMapping("/{scheduleId}")
-    public ResponseEntity<Void> updateSchedule(@PathVariable final Long scheduleId, @RequestBody final ScheduleUpdateReq request) {
+    public ResponseEntity<Void> updateSchedule(
+            @PathVariable final Long scheduleId,
+            @RequestBody final ScheduleUpdateReq request) {
+
         scheduleService.updateSchedule(scheduleId, request);
 
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{scheduleId}")
-    public ResponseEntity<Void> deleteSchedule(@PathVariable final Long scheduleId, @RequestBody final ScheduleDeleteReq request) {
+    public ResponseEntity<Void> deleteSchedule(@PathVariable final Long scheduleId,
+                                               @RequestBody final ScheduleDeleteReq request) {
         scheduleService.deleteSchedule(scheduleId, request);
 
         return ResponseEntity.noContent().build();

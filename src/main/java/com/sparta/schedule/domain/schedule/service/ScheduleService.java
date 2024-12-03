@@ -2,7 +2,6 @@ package com.sparta.schedule.domain.schedule.service;
 
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleCreateReq;
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleDeleteReq;
-import com.sparta.schedule.domain.schedule.dto.request.ScheduleReadOverallReq;
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleUpdateReq;
 import com.sparta.schedule.domain.schedule.dto.response.ScheduleReadDetailRes;
 import com.sparta.schedule.domain.schedule.entity.Schedule;
@@ -22,8 +21,8 @@ public class ScheduleService {
         return scheduleRepository.save(request);
     }
 
-    public List<ScheduleReadDetailRes> readOverallSchedule(ScheduleReadOverallReq request) {
-        return scheduleRepository.findAllByUpdatedAtAndUserName(request);
+    public List<ScheduleReadDetailRes> readOverallSchedule(String updatedAt, String name) {
+        return scheduleRepository.findAllByUpdatedAtAndUserName(updatedAt, name);
     }
 
     public ScheduleReadDetailRes readDetailSchedule(Long scheduleId) {

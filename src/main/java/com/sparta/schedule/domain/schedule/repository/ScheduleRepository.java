@@ -1,7 +1,6 @@
 package com.sparta.schedule.domain.schedule.repository;
 
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleCreateReq;
-import com.sparta.schedule.domain.schedule.dto.request.ScheduleReadOverallReq;
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleUpdateReq;
 import com.sparta.schedule.domain.schedule.dto.response.ScheduleReadDetailRes;
 import com.sparta.schedule.domain.schedule.entity.Schedule;
@@ -47,29 +46,29 @@ public class ScheduleRepository {
                 .orElseThrow(() -> new FailedToGeneratedKeyException("생성된 키를 검색하지 못했습니다."));
     }
 
-    public List<ScheduleReadDetailRes> findAllByUpdatedAtAndUserName(ScheduleReadOverallReq request) {
+    public List<ScheduleReadDetailRes> findAllByUpdatedAtAndUserName(String updatedAt, String name) {
         List<String> queryArgs = new ArrayList<>();
         String sql = "SELECT schedule_id, title, todo, user_name, password, createdAt, updatedAt FROM SCHEDULE";
 
-        if (StringUtils.hasText(request.updatedAt()) || StringUtils.hasText(request.name())) {
+        if (StringUtils.hasText(updatedAt) || StringUtils.hasText(name)) {
             sql += " WHERE ";
         }
 
         boolean orFlag = false;
 
-        if (StringUtils.hasText(request.updatedAt())) {
+        if (StringUtils.hasText(updatedAt)) {
             sql += "? <= updatedAt";
-            queryArgs.add(request.updatedAt());
+            queryArgs.add(updatedAt);
             orFlag = true;
         }
 
-        if (StringUtils.hasText(request.name())) {
+        if (StringUtils.hasText(name)) {
             if (orFlag) {
                 sql += " OR ";
             }
 
             sql += "user_name = ?";
-            queryArgs.add(request.name());
+            queryArgs.add(name);
         }
 
         sql += " ORDER BY updatedAt DESC";
