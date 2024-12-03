@@ -53,8 +53,10 @@ public class ScheduleController {
     }
 
     @DeleteMapping("/{scheduleId}")
-    public ResponseEntity<Void> deleteSchedule(@PathVariable final Long scheduleId,
-                                               @RequestBody final ScheduleDeleteReq request) {
+    public ResponseEntity<Void> deleteSchedule(
+            @PathVariable final Long scheduleId,
+            @RequestBody final ScheduleDeleteReq request) {
+
         scheduleService.deleteSchedule(scheduleId, request);
 
         return ResponseEntity.noContent().build();
