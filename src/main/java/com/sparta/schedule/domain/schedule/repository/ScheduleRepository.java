@@ -2,6 +2,7 @@ package com.sparta.schedule.domain.schedule.repository;
 
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleCreateReq;
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleGetOverallReq;
+import com.sparta.schedule.domain.schedule.dto.request.ScheduleModifyReq;
 import com.sparta.schedule.domain.schedule.dto.response.ScheduleGetDetailRes;
 import com.sparta.schedule.domain.schedule.entity.Schedule;
 import com.sparta.schedule.domain.schedule.exception.FailedToGeneratedKey;
@@ -48,7 +49,7 @@ public class ScheduleRepository {
 
     public List<ScheduleGetDetailRes> findAllByUpdatedAtAndUserName(ScheduleGetOverallReq request) {
         List<String> queryArgs = new ArrayList<>();
-        String sql = "SELECT schedule_id, title, todo, user_name, createdAt, updatedAt FROM SCHEDULE";
+        String sql = "SELECT schedule_id, title, todo, user_name, password, createdAt, updatedAt FROM SCHEDULE";
 
         if (StringUtils.hasText(request.updatedAt()) || StringUtils.hasText(request.name())) {
             sql += " WHERE ";
@@ -78,12 +79,18 @@ public class ScheduleRepository {
                 .toList();
     }
 
-    public Optional<ScheduleGetDetailRes> findById(Long scheduleId) {
-        String sql = "SELECT schedule_id, title, todo, user_name, createdAt, updatedAt FROM SCHEDULE";
+    public void modifySchedule(Long scheduleId, ScheduleModifyReq request) {
+        String sql = "UPDATE schedule set todo = ?, user_name = ? WHERE schedule_id = ?";
+
+        jdbcTemplate.update(sql, request.todo(), request.name(), scheduleId);
+    }
+
+    public Optional<Schedule> findById(Long scheduleId) {
+        String sql = "SELECT schedule_id, title, todo, user_name, password, createdAt, updatedAt FROM SCHEDULE";
         sql += " WHERE schedule_id = ?";
 
         return jdbcTemplate.query(sql, scheduleRowMapper(), scheduleId).stream()
-                .findFirst().map(ScheduleGetDetailRes::from);
+                .findFirst();
     }
 
     private RowMapper<Schedule> scheduleRowMapper() {
@@ -92,6 +99,7 @@ public class ScheduleRepository {
                 .title(rs.getString("title"))
                 .todo(rs.getString("todo"))
                 .userName(rs.getString("user_name"))
+                .password(rs.getString("password"))
                 .createdAt(convertToLocalDate(rs.getDate("createdAt")))
                 .updatedAt(convertToLocalDate(rs.getDate("updatedAt")))
                 .build()

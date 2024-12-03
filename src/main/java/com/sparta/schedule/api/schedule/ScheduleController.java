@@ -2,6 +2,7 @@ package com.sparta.schedule.api.schedule;
 
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleCreateReq;
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleGetOverallReq;
+import com.sparta.schedule.domain.schedule.dto.request.ScheduleModifyReq;
 import com.sparta.schedule.domain.schedule.dto.response.ScheduleGetDetailRes;
 import com.sparta.schedule.domain.schedule.service.ScheduleService;
 import jakarta.validation.Valid;
@@ -38,5 +39,12 @@ public class ScheduleController {
     @GetMapping("/{scheduleId}")
     public ResponseEntity<ScheduleGetDetailRes> readSchedule(@PathVariable final Long scheduleId) {
         return ResponseEntity.ok(scheduleService.getDetailSchedule(scheduleId));
+    }
+
+    @PatchMapping("/{scheduleId}")
+    public ResponseEntity<Void> updateSchedule(@PathVariable final Long scheduleId, @RequestBody final ScheduleModifyReq request) {
+        scheduleService.modifySchedule(scheduleId, request);
+
+        return ResponseEntity.ok().build();
     }
 }
