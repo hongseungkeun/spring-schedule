@@ -1,17 +1,17 @@
 package com.sparta.schedule.api.schedule;
 
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleCreateReq;
+import com.sparta.schedule.domain.schedule.dto.request.ScheduleGetOverallReq;
+import com.sparta.schedule.domain.schedule.dto.response.ScheduleGetOverallRes;
 import com.sparta.schedule.domain.schedule.service.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/schedules")
@@ -28,5 +28,10 @@ public class ScheduleController {
                 .toUri();
 
         return ResponseEntity.created(uri).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ScheduleGetOverallRes>> getSchedules(@RequestBody final ScheduleGetOverallReq request) {
+        return ResponseEntity.ok(scheduleService.getOverallSchedule(request));
     }
 }
