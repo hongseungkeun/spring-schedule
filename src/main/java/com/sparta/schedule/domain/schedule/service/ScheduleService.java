@@ -1,6 +1,7 @@
 package com.sparta.schedule.domain.schedule.service;
 
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleCreateReq;
+import com.sparta.schedule.domain.schedule.dto.request.ScheduleDeleteReq;
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleReadOverallReq;
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleUpdateReq;
 import com.sparta.schedule.domain.schedule.dto.response.ScheduleReadDetailRes;
@@ -30,15 +31,25 @@ public class ScheduleService {
     }
 
     public void updateSchedule(Long scheduleId, ScheduleUpdateReq request) {
-        Schedule schedule = findScheduleById(scheduleId);
+        checkPassword(scheduleId, request.password());
 
-        schedule.checkPassword(request.password());
+        scheduleRepository.update(scheduleId, request);
+    }
 
-        scheduleRepository.updateSchedule(scheduleId, request);
+    public void deleteSchedule(Long scheduleId, ScheduleDeleteReq request) {
+        checkPassword(scheduleId, request.password());
+
+        scheduleRepository.delete(scheduleId);
     }
 
     private Schedule findScheduleById(Long scheduleId) {
         return scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new ScheduleNotFoundException("일정을 찾을 수 없습니다"));
+    }
+
+    private void checkPassword(Long scheduleId, String password) {
+        Schedule schedule = findScheduleById(scheduleId);
+
+        schedule.checkPassword(password);
     }
 }

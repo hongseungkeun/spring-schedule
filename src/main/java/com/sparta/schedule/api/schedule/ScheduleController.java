@@ -1,6 +1,7 @@
 package com.sparta.schedule.api.schedule;
 
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleCreateReq;
+import com.sparta.schedule.domain.schedule.dto.request.ScheduleDeleteReq;
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleReadOverallReq;
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleUpdateReq;
 import com.sparta.schedule.domain.schedule.dto.response.ScheduleReadDetailRes;
@@ -24,9 +25,7 @@ public class ScheduleController {
     public ResponseEntity<Void> createSchedule(@RequestBody @Valid final ScheduleCreateReq request) {
         Long scheduleId = scheduleService.createSchedule(request);
 
-        URI uri = UriComponentsBuilder.fromPath("/api/schedules/{scheduleId}")
-                .buildAndExpand(scheduleId)
-                .toUri();
+        URI uri = UriComponentsBuilder.fromPath("/api/schedules/{scheduleId}").buildAndExpand(scheduleId).toUri();
 
         return ResponseEntity.created(uri).build();
     }
@@ -46,5 +45,12 @@ public class ScheduleController {
         scheduleService.updateSchedule(scheduleId, request);
 
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{scheduleId}")
+    public ResponseEntity<Void> deleteSchedule(@PathVariable final Long scheduleId, @RequestBody final ScheduleDeleteReq request) {
+        scheduleService.deleteSchedule(scheduleId, request);
+
+        return ResponseEntity.noContent().build();
     }
 }

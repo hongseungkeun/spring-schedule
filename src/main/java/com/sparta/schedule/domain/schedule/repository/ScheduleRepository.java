@@ -79,10 +79,16 @@ public class ScheduleRepository {
                 .toList();
     }
 
-    public void updateSchedule(Long scheduleId, ScheduleUpdateReq request) {
+    public void update(Long scheduleId, ScheduleUpdateReq request) {
         String sql = "UPDATE schedule set todo = ?, user_name = ? WHERE schedule_id = ?";
 
         jdbcTemplate.update(sql, request.todo(), request.name(), scheduleId);
+    }
+
+    public void delete(Long scheduleId) {
+        String sql = "DELETE FROM schedule WHERE schedule_id = ?";
+
+        jdbcTemplate.update(sql, scheduleId);
     }
 
     public Optional<Schedule> findById(Long scheduleId) {
