@@ -20,7 +20,7 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody @Valid final ScheduleCreateReq request) {
+    public ResponseEntity<Void> createSchedule(@RequestBody @Valid final ScheduleCreateReq request) {
         Long scheduleId = scheduleService.createSchedule(request);
 
         URI uri = UriComponentsBuilder.fromPath("/api/schedules/{scheduleId}")
@@ -31,12 +31,12 @@ public class ScheduleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ScheduleGetDetailRes>> getSchedules(@RequestBody final ScheduleGetOverallReq request) {
+    public ResponseEntity<List<ScheduleGetDetailRes>> readSchedules(@RequestBody final ScheduleGetOverallReq request) {
         return ResponseEntity.ok(scheduleService.getOverallSchedule(request));
     }
 
     @GetMapping("/{scheduleId}")
-    public ResponseEntity<ScheduleGetDetailRes> getSchedule(@PathVariable final Long scheduleId) {
+    public ResponseEntity<ScheduleGetDetailRes> readSchedule(@PathVariable final Long scheduleId) {
         return ResponseEntity.ok(scheduleService.getDetailSchedule(scheduleId));
     }
 }
