@@ -22,6 +22,17 @@ import java.util.Optional;
 
 @Repository
 public class ScheduleRepository {
+    private static final String INSERT_SQL = "INSERT INTO SCHEDULE(title, todo, user_name, password) VALUES (?, ?, ?, ?)";
+    private static final String SELECT_SQL = "SELECT schedule_id, title, todo, user_name, password, createdAt, updatedAt FROM SCHEDULE";
+    private static final String UPDATE_SQL = "UPDATE schedule set todo = ?, user_name = ?";
+    private static final String DELETE_SQL = "DELETE FROM schedule";
+    private static final String BY_ID = " WHERE schedule_id = ?";
+    private static final String ORDER_BY_UPDATED_AT_DESC = " ORDER BY updatedAt DESC";
+    private static final String WHERE = " WHERE ";
+    private static final String OR = " OR ";
+    private static final String CONDITION_UPDATED_AT = "? <= updatedAt";
+    private static final String CONDITION_USER_NAME = "user_name = ?";
+
     private final JdbcTemplate jdbcTemplate;
 
     public ScheduleRepository(DataSource dataSource) {
@@ -30,10 +41,9 @@ public class ScheduleRepository {
 
     public Long save(ScheduleCreateReq request) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String sql = "INSERT INTO SCHEDULE(title, todo, user_name, password) VALUES (?, ?, ?, ?)";
 
         jdbcTemplate.update(conn -> {
-            PreparedStatement ps = conn.prepareStatement(sql, new String[]{"scheduleId"});
+            PreparedStatement ps = conn.prepareStatement(INSERT_SQL, new String[]{"scheduleId"});
             ps.setString(1, request.title());
             ps.setString(2, request.todo());
             ps.setString(3, request.name());
@@ -47,54 +57,47 @@ public class ScheduleRepository {
     }
 
     public List<ScheduleReadDetailRes> findAllByUpdatedAtAndUserName(String updatedAt, String name) {
+        StringBuilder queryBuilder = new StringBuilder(SELECT_SQL);
         List<String> queryArgs = new ArrayList<>();
-        String sql = "SELECT schedule_id, title, todo, user_name, password, createdAt, updatedAt FROM SCHEDULE";
 
         if (StringUtils.hasText(updatedAt) || StringUtils.hasText(name)) {
-            sql += " WHERE ";
+            queryBuilder.append(WHERE);
         }
 
         boolean orFlag = false;
 
         if (StringUtils.hasText(updatedAt)) {
-            sql += "? <= updatedAt";
+            queryBuilder.append(CONDITION_UPDATED_AT);
             queryArgs.add(updatedAt);
             orFlag = true;
         }
 
         if (StringUtils.hasText(name)) {
             if (orFlag) {
-                sql += " OR ";
+                queryBuilder.append(OR);
             }
 
-            sql += "user_name = ?";
+            queryBuilder.append(CONDITION_USER_NAME);
             queryArgs.add(name);
         }
 
-        sql += " ORDER BY updatedAt DESC";
+        queryBuilder.append(ORDER_BY_UPDATED_AT_DESC);
 
-        return jdbcTemplate.query(sql, scheduleRowMapper(), queryArgs.toArray()).stream()
+        return jdbcTemplate.query(queryBuilder.toString(), scheduleRowMapper(), queryArgs.toArray()).stream()
                 .map(ScheduleReadDetailRes::from)
                 .toList();
     }
 
     public void update(Long scheduleId, ScheduleUpdateReq request) {
-        String sql = "UPDATE schedule set todo = ?, user_name = ? WHERE schedule_id = ?";
-
-        jdbcTemplate.update(sql, request.todo(), request.name(), scheduleId);
+        jdbcTemplate.update(UPDATE_SQL + BY_ID, request.todo(), request.name(), scheduleId);
     }
 
     public void delete(Long scheduleId) {
-        String sql = "DELETE FROM schedule WHERE schedule_id = ?";
-
-        jdbcTemplate.update(sql, scheduleId);
+        jdbcTemplate.update(DELETE_SQL + BY_ID, scheduleId);
     }
 
     public Optional<Schedule> findById(Long scheduleId) {
-        String sql = "SELECT schedule_id, title, todo, user_name, password, createdAt, updatedAt FROM SCHEDULE";
-        sql += " WHERE schedule_id = ?";
-
-        return jdbcTemplate.query(sql, scheduleRowMapper(), scheduleId).stream()
+        return jdbcTemplate.query(SELECT_SQL + BY_ID, scheduleRowMapper(), scheduleId).stream()
                 .findFirst();
     }
 
