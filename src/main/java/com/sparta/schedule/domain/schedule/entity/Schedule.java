@@ -1,6 +1,6 @@
 package com.sparta.schedule.domain.schedule.entity;
 
-import com.sparta.schedule.domain.schedule.exception.PasswordNotMatched;
+import com.sparta.schedule.domain.schedule.exception.PasswordNotMatchedException;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -32,7 +32,7 @@ public class Schedule {
 
     public void checkPassword(String password) {
         if (!this.password.equals(password)) {
-            throw new PasswordNotMatched("비밀번호가 일치하지 않습니다.");
+            throw new PasswordNotMatchedException("비밀번호가 일치하지 않습니다.");
         }
     }
 }

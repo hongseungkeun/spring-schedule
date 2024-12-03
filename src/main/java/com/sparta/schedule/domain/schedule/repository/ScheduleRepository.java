@@ -5,7 +5,7 @@ import com.sparta.schedule.domain.schedule.dto.request.ScheduleGetOverallReq;
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleModifyReq;
 import com.sparta.schedule.domain.schedule.dto.response.ScheduleGetDetailRes;
 import com.sparta.schedule.domain.schedule.entity.Schedule;
-import com.sparta.schedule.domain.schedule.exception.FailedToGeneratedKey;
+import com.sparta.schedule.domain.schedule.exception.FailedToGeneratedKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -44,7 +44,7 @@ public class ScheduleRepository {
 
         return Optional.ofNullable(keyHolder.getKey())
                 .map(Number::longValue)
-                .orElseThrow(() -> new FailedToGeneratedKey("생성된 키를 검색하지 못했습니다."));
+                .orElseThrow(() -> new FailedToGeneratedKeyException("생성된 키를 검색하지 못했습니다."));
     }
 
     public List<ScheduleGetDetailRes> findAllByUpdatedAtAndUserName(ScheduleGetOverallReq request) {
