@@ -1,9 +1,9 @@
 package com.sparta.schedule.domain.schedule.service;
 
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleCreateReq;
-import com.sparta.schedule.domain.schedule.dto.request.ScheduleGetOverallReq;
-import com.sparta.schedule.domain.schedule.dto.request.ScheduleModifyReq;
-import com.sparta.schedule.domain.schedule.dto.response.ScheduleGetDetailRes;
+import com.sparta.schedule.domain.schedule.dto.request.ScheduleReadOverallReq;
+import com.sparta.schedule.domain.schedule.dto.request.ScheduleUpdateReq;
+import com.sparta.schedule.domain.schedule.dto.response.ScheduleReadDetailRes;
 import com.sparta.schedule.domain.schedule.entity.Schedule;
 import com.sparta.schedule.domain.schedule.exception.ScheduleNotFoundException;
 import com.sparta.schedule.domain.schedule.repository.ScheduleRepository;
@@ -21,20 +21,20 @@ public class ScheduleService {
         return scheduleRepository.save(request);
     }
 
-    public List<ScheduleGetDetailRes> getOverallSchedule(ScheduleGetOverallReq request) {
+    public List<ScheduleReadDetailRes> readOverallSchedule(ScheduleReadOverallReq request) {
         return scheduleRepository.findAllByUpdatedAtAndUserName(request);
     }
 
-    public ScheduleGetDetailRes getDetailSchedule(Long scheduleId) {
-        return ScheduleGetDetailRes.from(findScheduleById(scheduleId));
+    public ScheduleReadDetailRes readDetailSchedule(Long scheduleId) {
+        return ScheduleReadDetailRes.from(findScheduleById(scheduleId));
     }
 
-    public void modifySchedule(Long scheduleId, ScheduleModifyReq request) {
+    public void updateSchedule(Long scheduleId, ScheduleUpdateReq request) {
         Schedule schedule = findScheduleById(scheduleId);
 
         schedule.checkPassword(request.password());
 
-        scheduleRepository.modifySchedule(scheduleId, request);
+        scheduleRepository.updateSchedule(scheduleId, request);
     }
 
     private Schedule findScheduleById(Long scheduleId) {

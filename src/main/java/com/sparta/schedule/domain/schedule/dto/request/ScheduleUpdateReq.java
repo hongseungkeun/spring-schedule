@@ -2,7 +2,7 @@ package com.sparta.schedule.domain.schedule.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record ScheduleModifyReq(
+public record ScheduleUpdateReq(
         String todo,
         String name,
 

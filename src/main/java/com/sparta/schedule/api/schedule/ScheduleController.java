@@ -1,9 +1,9 @@
 package com.sparta.schedule.api.schedule;
 
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleCreateReq;
-import com.sparta.schedule.domain.schedule.dto.request.ScheduleGetOverallReq;
-import com.sparta.schedule.domain.schedule.dto.request.ScheduleModifyReq;
-import com.sparta.schedule.domain.schedule.dto.response.ScheduleGetDetailRes;
+import com.sparta.schedule.domain.schedule.dto.request.ScheduleReadOverallReq;
+import com.sparta.schedule.domain.schedule.dto.request.ScheduleUpdateReq;
+import com.sparta.schedule.domain.schedule.dto.response.ScheduleReadDetailRes;
 import com.sparta.schedule.domain.schedule.service.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,18 +32,18 @@ public class ScheduleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ScheduleGetDetailRes>> readSchedules(@RequestBody final ScheduleGetOverallReq request) {
-        return ResponseEntity.ok(scheduleService.getOverallSchedule(request));
+    public ResponseEntity<List<ScheduleReadDetailRes>> readSchedules(@RequestBody final ScheduleReadOverallReq request) {
+        return ResponseEntity.ok(scheduleService.readOverallSchedule(request));
     }
 
     @GetMapping("/{scheduleId}")
-    public ResponseEntity<ScheduleGetDetailRes> readSchedule(@PathVariable final Long scheduleId) {
-        return ResponseEntity.ok(scheduleService.getDetailSchedule(scheduleId));
+    public ResponseEntity<ScheduleReadDetailRes> readSchedule(@PathVariable final Long scheduleId) {
+        return ResponseEntity.ok(scheduleService.readDetailSchedule(scheduleId));
     }
 
     @PatchMapping("/{scheduleId}")
-    public ResponseEntity<Void> updateSchedule(@PathVariable final Long scheduleId, @RequestBody final ScheduleModifyReq request) {
-        scheduleService.modifySchedule(scheduleId, request);
+    public ResponseEntity<Void> updateSchedule(@PathVariable final Long scheduleId, @RequestBody final ScheduleUpdateReq request) {
+        scheduleService.updateSchedule(scheduleId, request);
 
         return ResponseEntity.ok().build();
     }

@@ -1,9 +1,9 @@
 package com.sparta.schedule.domain.schedule.repository;
 
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleCreateReq;
-import com.sparta.schedule.domain.schedule.dto.request.ScheduleGetOverallReq;
-import com.sparta.schedule.domain.schedule.dto.request.ScheduleModifyReq;
-import com.sparta.schedule.domain.schedule.dto.response.ScheduleGetDetailRes;
+import com.sparta.schedule.domain.schedule.dto.request.ScheduleReadOverallReq;
+import com.sparta.schedule.domain.schedule.dto.request.ScheduleUpdateReq;
+import com.sparta.schedule.domain.schedule.dto.response.ScheduleReadDetailRes;
 import com.sparta.schedule.domain.schedule.entity.Schedule;
 import com.sparta.schedule.domain.schedule.exception.FailedToGeneratedKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -47,7 +47,7 @@ public class ScheduleRepository {
                 .orElseThrow(() -> new FailedToGeneratedKeyException("생성된 키를 검색하지 못했습니다."));
     }
 
-    public List<ScheduleGetDetailRes> findAllByUpdatedAtAndUserName(ScheduleGetOverallReq request) {
+    public List<ScheduleReadDetailRes> findAllByUpdatedAtAndUserName(ScheduleReadOverallReq request) {
         List<String> queryArgs = new ArrayList<>();
         String sql = "SELECT schedule_id, title, todo, user_name, password, createdAt, updatedAt FROM SCHEDULE";
 
@@ -75,11 +75,11 @@ public class ScheduleRepository {
         sql += " ORDER BY updatedAt DESC";
 
         return jdbcTemplate.query(sql, scheduleRowMapper(), queryArgs.toArray()).stream()
-                .map(ScheduleGetDetailRes::from)
+                .map(ScheduleReadDetailRes::from)
                 .toList();
     }
 
-    public void modifySchedule(Long scheduleId, ScheduleModifyReq request) {
+    public void updateSchedule(Long scheduleId, ScheduleUpdateReq request) {
         String sql = "UPDATE schedule set todo = ?, user_name = ? WHERE schedule_id = ?";
 
         jdbcTemplate.update(sql, request.todo(), request.name(), scheduleId);
