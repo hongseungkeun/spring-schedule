@@ -1,10 +1,10 @@
 package com.sparta.schedule.api.schedule;
 
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleCreateReq;
-import com.sparta.schedule.domain.schedule.dto.request.ScheduleDeleteReq;
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleUpdateReq;
 import com.sparta.schedule.domain.schedule.dto.response.ScheduleReadDetailRes;
 import com.sparta.schedule.domain.schedule.service.ScheduleService;
+import com.sparta.schedule.global.annotation.LoginId;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,11 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @PostMapping
-    public ResponseEntity<Void> createSchedule(@RequestBody @Valid final ScheduleCreateReq request) {
-        Long scheduleId = scheduleService.createSchedule(request);
+    public ResponseEntity<Void> createSchedule(
+            @RequestBody @Valid final ScheduleCreateReq request,
+            @LoginId final Long userId) {
+
+        Long scheduleId = scheduleService.createSchedule(request, userId);
 
         URI uri = UriComponentsBuilder.fromPath("/api/schedules/{scheduleId}").buildAndExpand(scheduleId).toUri();
 
@@ -32,9 +35,9 @@ public class ScheduleController {
     @GetMapping
     public ResponseEntity<List<ScheduleReadDetailRes>> readSchedules(
             @RequestParam(required = false) final String updatedAt,
-            @RequestParam(required = false) final String name) {
+            @RequestParam(required = false) final Long id) {
 
-        return ResponseEntity.ok(scheduleService.readOverallSchedule(updatedAt, name));
+        return ResponseEntity.ok(scheduleService.readOverallSchedule(updatedAt, id));
     }
 
     @GetMapping("/{scheduleId}")
@@ -45,9 +48,10 @@ public class ScheduleController {
     @PatchMapping("/{scheduleId}")
     public ResponseEntity<Void> updateSchedule(
             @PathVariable final Long scheduleId,
-            @RequestBody final ScheduleUpdateReq request) {
+            @RequestBody final ScheduleUpdateReq request,
+            @LoginId final Long userId) {
 
-        scheduleService.updateSchedule(scheduleId, request);
+        scheduleService.updateSchedule(scheduleId, request, userId);
 
         return ResponseEntity.ok().build();
     }
@@ -55,9 +59,9 @@ public class ScheduleController {
     @DeleteMapping("/{scheduleId}")
     public ResponseEntity<Void> deleteSchedule(
             @PathVariable final Long scheduleId,
-            @RequestBody final ScheduleDeleteReq request) {
+            @LoginId final Long userId) {
 
-        scheduleService.deleteSchedule(scheduleId, request);
+        scheduleService.deleteSchedule(scheduleId, userId);
 
         return ResponseEntity.noContent().build();
     }
