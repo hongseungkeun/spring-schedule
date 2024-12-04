@@ -1,7 +1,10 @@
 package com.sparta.schedule.domain.user.exception;
 
-public class AlreadyExistUserException extends RuntimeException {
-    public AlreadyExistUserException(String message) {
-        super(message);
+import com.sparta.schedule.global.exception.CustomRuntimeException;
+import com.sparta.schedule.global.exception.error.ErrorCode;
+
+public class AlreadyExistUserException extends CustomRuntimeException {
+    public AlreadyExistUserException(ErrorCode errorCode) {
+        super(errorCode);
     }
 }

@@ -1,6 +1,7 @@
 package com.sparta.schedule.global.interceptor;
 
 import com.sparta.schedule.global.exception.AuthFailedException;
+import com.sparta.schedule.global.exception.error.ErrorCode;
 import com.sparta.schedule.global.util.SessionUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +19,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         if (session == null || session.getAttribute(SessionUtil.SESSION_KEY) == null) {
-            throw new AuthFailedException("권한이 없습니다.");
+            throw new AuthFailedException(ErrorCode.AUTH_FAILED);
         }
 
         return true;

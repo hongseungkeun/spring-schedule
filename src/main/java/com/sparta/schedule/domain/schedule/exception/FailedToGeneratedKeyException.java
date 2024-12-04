@@ -1,7 +1,10 @@
 package com.sparta.schedule.domain.schedule.exception;
 
-public class FailedToGeneratedKeyException extends RuntimeException {
-    public FailedToGeneratedKeyException(String message) {
-        super(message);
+import com.sparta.schedule.global.exception.CustomRuntimeException;
+import com.sparta.schedule.global.exception.error.ErrorCode;
+
+public class FailedToGeneratedKeyException extends CustomRuntimeException {
+    public FailedToGeneratedKeyException(ErrorCode errorCode) {
+        super(errorCode);
     }
 }
