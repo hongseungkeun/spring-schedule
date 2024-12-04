@@ -13,16 +13,18 @@ public record ScheduleReadDetailRes(
         String todo,
         String name,
         LocalDate createdAt,
-        LocalDate updatedAt
+        LocalDate updatedAt,
+        Long userId
 ) {
     public static ScheduleReadDetailRes from(Schedule schedule) {
         return ScheduleReadDetailRes.builder()
                 .scheduleId(schedule.getScheduleId())
                 .title(schedule.getTitle())
                 .todo(schedule.getTodo())
-                .name(schedule.getUserName())
+                .name(schedule.getUser().getName())
                 .createdAt(schedule.getCreatedAt())
                 .updatedAt(schedule.getUpdatedAt())
+                .userId(schedule.getUser().getUserId())
                 .build();
     }
 }

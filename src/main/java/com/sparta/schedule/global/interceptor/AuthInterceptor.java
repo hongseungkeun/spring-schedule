@@ -18,7 +18,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         if (session == null || session.getAttribute(SessionUtil.SESSION_KEY) == null) {
-            throw new AuthFailedException("권한이 없습니다. 로그인 후 이용해주세요");
+            throw new AuthFailedException("권한이 없습니다.");
         }
 
         return true;

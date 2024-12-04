@@ -7,12 +7,6 @@ public record ScheduleCreateReq(
         String title,
 
         @NotBlank
-        String todo,
-
-        @NotBlank
-        String name,
-
-        @NotBlank
-        String password
+        String todo
 ) {
 }

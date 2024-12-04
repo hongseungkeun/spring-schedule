@@ -5,6 +5,7 @@ import com.sparta.schedule.domain.schedule.dto.request.ScheduleUpdateReq;
 import com.sparta.schedule.domain.schedule.dto.response.ScheduleReadDetailRes;
 import com.sparta.schedule.domain.schedule.entity.Schedule;
 import com.sparta.schedule.domain.schedule.exception.FailedToGeneratedKeyException;
+import com.sparta.schedule.domain.user.entity.User;
 import com.sparta.schedule.global.util.DateUtil;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,20 +18,21 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
 public class ScheduleRepository {
-    private static final String INSERT_SQL = "INSERT INTO schedule(title, todo, user_name, password) VALUES (?, ?, ?, ?)";
-    private static final String SELECT_SQL = "SELECT schedule_id, title, todo, user_name, password, createdAt, updatedAt FROM schedule";
-    private static final String UPDATE_SQL = "UPDATE schedule set todo = ?, user_name = ?";
+    private static final String INSERT_SQL = "INSERT INTO schedule(title, todo, user_id) VALUES (?, ?, ?)";
+    private static final String SELECT_SQL = "SELECT s.schedule_id, s.title, s.todo, s.created_at, s.updated_at, u.user_id, u.name FROM schedule s LEFT JOIN USER u on s.user_id = u.user_id";
+    private static final String UPDATE_SQL = "UPDATE schedule set todo = ?";
     private static final String DELETE_SQL = "DELETE FROM schedule";
     private static final String BY_ID = " WHERE schedule_id = ?";
-    private static final String ORDER_BY_UPDATED_AT_DESC = " ORDER BY updatedAt DESC";
+    private static final String ORDER_BY_UPDATED_AT_DESC = " ORDER BY s.updated_at DESC";
     private static final String WHERE = " WHERE ";
     private static final String OR = " OR ";
-    private static final String CONDITION_UPDATED_AT = "? <= updatedAt";
-    private static final String CONDITION_USER_NAME = "user_name = ?";
+    private static final String CONDITION_UPDATED_AT = "? <= s.updated_t";
+    private static final String CONDITION_USER_NAME = "u.name = ?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -38,15 +40,14 @@ public class ScheduleRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public Long save(ScheduleCreateReq request) {
+    public Long save(ScheduleCreateReq request, Long userId) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(conn -> {
             PreparedStatement ps = conn.prepareStatement(INSERT_SQL, new String[]{"scheduleId"});
             ps.setString(1, request.title());
             ps.setString(2, request.todo());
-            ps.setString(3, request.name());
-            ps.setString(4, request.password());
+            ps.setLong(3, userId);
             return ps;
         }, keyHolder);
 
@@ -55,11 +56,11 @@ public class ScheduleRepository {
                 .orElseThrow(() -> new FailedToGeneratedKeyException("생성된 키를 검색하지 못했습니다."));
     }
 
-    public List<ScheduleReadDetailRes> findAllByUpdatedAtAndUserName(String updatedAt, String name) {
+    public List<ScheduleReadDetailRes> findAllByUpdatedAtAndUserName(String updatedAt, Long id) {
         StringBuilder queryBuilder = new StringBuilder(SELECT_SQL);
-        List<String> queryArgs = new ArrayList<>();
+        List<Object> queryArgs = new ArrayList<>();
 
-        if (StringUtils.hasText(updatedAt) || StringUtils.hasText(name)) {
+        if (StringUtils.hasText(updatedAt) || !Objects.isNull(id)) {
             queryBuilder.append(WHERE);
         }
 
@@ -71,13 +72,13 @@ public class ScheduleRepository {
             orFlag = true;
         }
 
-        if (StringUtils.hasText(name)) {
+        if (!Objects.isNull(id)) {
             if (orFlag) {
                 queryBuilder.append(OR);
             }
 
             queryBuilder.append(CONDITION_USER_NAME);
-            queryArgs.add(name);
+            queryArgs.add(id);
         }
 
         queryBuilder.append(ORDER_BY_UPDATED_AT_DESC);
@@ -88,7 +89,7 @@ public class ScheduleRepository {
     }
 
     public void update(Long scheduleId, ScheduleUpdateReq request) {
-        jdbcTemplate.update(UPDATE_SQL + BY_ID, request.todo(), request.name(), scheduleId);
+        jdbcTemplate.update(UPDATE_SQL + BY_ID, request.todo(), scheduleId);
     }
 
     public void delete(Long scheduleId) {
@@ -104,8 +105,12 @@ public class ScheduleRepository {
                 .scheduleId(rs.getLong("schedule_id"))
                 .title(rs.getString("title"))
                 .todo(rs.getString("todo"))
-                .createdAt(DateUtil.convertToLocalDate(rs.getDate("createdAt")))
-                .updatedAt(DateUtil.convertToLocalDate(rs.getDate("updatedAt")))
+                .createdAt(DateUtil.convertToLocalDate(rs.getDate("created_at")))
+                .updatedAt(DateUtil.convertToLocalDate(rs.getDate("updated_at")))
+                .user(User.builder()
+                        .userId(rs.getLong("user_id"))
+                        .name(rs.getString("name"))
+                        .build())
                 .build()
         );
     }

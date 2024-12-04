@@ -1,10 +1,7 @@
 package com.sparta.schedule.domain.schedule.entity;
 
 import com.sparta.schedule.domain.user.entity.User;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -17,6 +14,7 @@ public class Schedule {
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
+    @Setter
     private User user;
 
     @Builder
