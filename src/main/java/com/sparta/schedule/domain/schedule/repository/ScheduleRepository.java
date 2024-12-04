@@ -7,6 +7,7 @@ import com.sparta.schedule.domain.schedule.entity.Schedule;
 import com.sparta.schedule.domain.schedule.exception.FailedToGeneratedKeyException;
 import com.sparta.schedule.domain.user.entity.User;
 import com.sparta.schedule.global.util.DateUtil;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -31,8 +32,9 @@ public class ScheduleRepository {
     private static final String ORDER_BY_UPDATED_AT_DESC = " ORDER BY s.updated_at DESC";
     private static final String WHERE = " WHERE ";
     private static final String OR = " OR ";
-    private static final String CONDITION_UPDATED_AT = "? <= s.updated_t";
+    private static final String CONDITION_UPDATED_AT = "? <= s.updated_at";
     private static final String CONDITION_USER_NAME = "u.name = ?";
+    private static final String PAGINATION = " LIMIT ? OFFSET ?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -56,7 +58,7 @@ public class ScheduleRepository {
                 .orElseThrow(() -> new FailedToGeneratedKeyException("생성된 키를 검색하지 못했습니다."));
     }
 
-    public List<ScheduleReadDetailRes> findAllByUpdatedAtAndUserName(String updatedAt, Long id) {
+    public List<ScheduleReadDetailRes> findAllByUpdatedAtAndUserName(String updatedAt, Long id, Pageable pageable) {
         StringBuilder queryBuilder = new StringBuilder(SELECT_SQL);
         List<Object> queryArgs = new ArrayList<>();
 
@@ -82,6 +84,9 @@ public class ScheduleRepository {
         }
 
         queryBuilder.append(ORDER_BY_UPDATED_AT_DESC);
+        queryBuilder.append(PAGINATION);
+        queryArgs.add(pageable.getPageSize());
+        queryArgs.add(pageable.getOffset());
 
         return jdbcTemplate.query(queryBuilder.toString(), scheduleRowMapper(), queryArgs.toArray()).stream()
                 .map(ScheduleReadDetailRes::from)

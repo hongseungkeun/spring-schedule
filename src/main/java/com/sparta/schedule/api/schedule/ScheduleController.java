@@ -7,6 +7,8 @@ import com.sparta.schedule.domain.schedule.service.ScheduleService;
 import com.sparta.schedule.global.annotation.LoginId;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -35,9 +37,10 @@ public class ScheduleController {
     @GetMapping
     public ResponseEntity<List<ScheduleReadDetailRes>> readSchedules(
             @RequestParam(required = false) final String updatedAt,
-            @RequestParam(required = false) final Long id) {
+            @RequestParam(required = false) final Long id,
+            @PageableDefault final Pageable pageable) {
 
-        return ResponseEntity.ok(scheduleService.readOverallSchedule(updatedAt, id));
+        return ResponseEntity.ok(scheduleService.readOverallSchedule(updatedAt, id, pageable));
     }
 
     @GetMapping("/{scheduleId}")
