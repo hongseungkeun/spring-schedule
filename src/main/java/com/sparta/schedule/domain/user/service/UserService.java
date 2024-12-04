@@ -3,6 +3,7 @@ package com.sparta.schedule.domain.user.service;
 import com.sparta.schedule.domain.user.dto.UserLoginReq;
 import com.sparta.schedule.domain.user.dto.UserSignUpReq;
 import com.sparta.schedule.domain.user.entity.User;
+import com.sparta.schedule.domain.user.exception.AlreadyExistUserException;
 import com.sparta.schedule.domain.user.exception.UserNotFoundException;
 import com.sparta.schedule.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     public void signUp(UserSignUpReq request) {
+        isExistEmail(request.email());
+
         userRepository.save(request);
     }
 
@@ -33,5 +36,11 @@ public class UserService {
     private User findUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("유저가 존재하지 않습니다"));
+    }
+
+    private void isExistEmail(String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new AlreadyExistUserException("이미 존재하는 이메일입니다.");
+        }
     }
 }

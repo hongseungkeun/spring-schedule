@@ -14,6 +14,7 @@ import java.util.Optional;
 public class UserRepository {
     private static final String INSERT_SQL = "INSERT INTO user(email, password, name) VALUES (?, ?, ?)";
     private static final String SELECT_SQL = "SELECT user_id, email, password, name, created_at, updated_at FROM user";
+    private static final String EXIST_EMAIL_SQL = "SELECT COUNT(user_id) > 0 FROM user";
     private static final String BY_EMAIL = " WHERE email = ?";
     private static final String BY_ID = " WHERE user_id = ?";
 
@@ -33,6 +34,10 @@ public class UserRepository {
 
     public Optional<User> findById(Long id) {
         return jdbcTemplate.query(SELECT_SQL + BY_ID, userRowMapper(), id).stream().findFirst();
+    }
+
+    public boolean existsByEmail(String email) {
+        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(EXIST_EMAIL_SQL + BY_EMAIL, Boolean.class, email));
     }
 
     private RowMapper<User> userRowMapper() {
