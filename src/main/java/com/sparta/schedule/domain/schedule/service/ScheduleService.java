@@ -8,6 +8,7 @@ import com.sparta.schedule.domain.schedule.exception.ScheduleNotFoundException;
 import com.sparta.schedule.domain.schedule.repository.ScheduleRepository;
 import com.sparta.schedule.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +23,8 @@ public class ScheduleService {
         return scheduleRepository.save(request, userId);
     }
 
-    public List<ScheduleReadDetailRes> readOverallSchedule(String updatedAt, Long id) {
-        return scheduleRepository.findAllByUpdatedAtAndUserName(updatedAt, id);
+    public List<ScheduleReadDetailRes> readOverallSchedule(String updatedAt, Long id, Pageable pageable) {
+        return scheduleRepository.findAllByUpdatedAtAndUserName(updatedAt, id, pageable);
     }
 
     public ScheduleReadDetailRes readDetailSchedule(Long scheduleId) {
