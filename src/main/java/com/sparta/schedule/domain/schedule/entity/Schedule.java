@@ -1,7 +1,10 @@
 package com.sparta.schedule.domain.schedule.entity;
 
-import com.sparta.schedule.domain.schedule.exception.PasswordNotMatchedException;
-import lombok.*;
+import com.sparta.schedule.domain.user.entity.User;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -11,28 +14,20 @@ public class Schedule {
     private Long scheduleId;
     private String title;
     private String todo;
-    private String userName;
-    private String password;
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
+    private User user;
+
     @Builder
     public Schedule(Long scheduleId, String title,
-                    String todo, String userName,
-                    String password, LocalDate createdAt,
-                    LocalDate updatedAt) {
+                    String todo, LocalDate createdAt,
+                    LocalDate updatedAt, User user) {
         this.scheduleId = scheduleId;
         this.title = title;
         this.todo = todo;
-        this.userName = userName;
-        this.password = password;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    public void checkPassword(String password) {
-        if (!this.password.equals(password)) {
-            throw new PasswordNotMatchedException("비밀번호가 일치하지 않습니다.");
-        }
+        this.user = user;
     }
 }

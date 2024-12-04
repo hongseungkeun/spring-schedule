@@ -5,6 +5,7 @@ import com.sparta.schedule.domain.schedule.dto.request.ScheduleUpdateReq;
 import com.sparta.schedule.domain.schedule.dto.response.ScheduleReadDetailRes;
 import com.sparta.schedule.domain.schedule.entity.Schedule;
 import com.sparta.schedule.domain.schedule.exception.FailedToGeneratedKeyException;
+import com.sparta.schedule.global.util.DateUtil;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -13,17 +14,15 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
-import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class ScheduleRepository {
-    private static final String INSERT_SQL = "INSERT INTO SCHEDULE(title, todo, user_name, password) VALUES (?, ?, ?, ?)";
-    private static final String SELECT_SQL = "SELECT schedule_id, title, todo, user_name, password, createdAt, updatedAt FROM SCHEDULE";
+    private static final String INSERT_SQL = "INSERT INTO schedule(title, todo, user_name, password) VALUES (?, ?, ?, ?)";
+    private static final String SELECT_SQL = "SELECT schedule_id, title, todo, user_name, password, createdAt, updatedAt FROM schedule";
     private static final String UPDATE_SQL = "UPDATE schedule set todo = ?, user_name = ?";
     private static final String DELETE_SQL = "DELETE FROM schedule";
     private static final String BY_ID = " WHERE schedule_id = ?";
@@ -97,8 +96,7 @@ public class ScheduleRepository {
     }
 
     public Optional<Schedule> findById(Long scheduleId) {
-        return jdbcTemplate.query(SELECT_SQL + BY_ID, scheduleRowMapper(), scheduleId).stream()
-                .findFirst();
+        return jdbcTemplate.query(SELECT_SQL + BY_ID, scheduleRowMapper(), scheduleId).stream().findFirst();
     }
 
     private RowMapper<Schedule> scheduleRowMapper() {
@@ -106,15 +104,9 @@ public class ScheduleRepository {
                 .scheduleId(rs.getLong("schedule_id"))
                 .title(rs.getString("title"))
                 .todo(rs.getString("todo"))
-                .userName(rs.getString("user_name"))
-                .password(rs.getString("password"))
-                .createdAt(convertToLocalDate(rs.getDate("createdAt")))
-                .updatedAt(convertToLocalDate(rs.getDate("updatedAt")))
+                .createdAt(DateUtil.convertToLocalDate(rs.getDate("createdAt")))
+                .updatedAt(DateUtil.convertToLocalDate(rs.getDate("updatedAt")))
                 .build()
         );
-    }
-
-    private LocalDate convertToLocalDate(Date date) {
-        return date.toLocalDate();
     }
 }

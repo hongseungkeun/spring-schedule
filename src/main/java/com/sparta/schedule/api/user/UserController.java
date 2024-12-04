@@ -1,5 +1,6 @@
 package com.sparta.schedule.api.user;
 
+import com.sparta.schedule.domain.user.dto.UserLoginReq;
 import com.sparta.schedule.domain.user.dto.UserSignUpReq;
 import com.sparta.schedule.domain.user.service.UserService;
 import jakarta.validation.Valid;
@@ -27,5 +28,12 @@ public class UserController {
         URI uri = UriComponentsBuilder.fromPath("/api/users/login").build().toUri();
 
         return ResponseEntity.status(HttpStatus.FOUND).location(uri).build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Void> login(@RequestBody @Valid final UserLoginReq request) {
+        Long id = userService.login(request);
+
+        return ResponseEntity.ok().build();
     }
 }
