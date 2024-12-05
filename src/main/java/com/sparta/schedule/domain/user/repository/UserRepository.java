@@ -1,6 +1,6 @@
 package com.sparta.schedule.domain.user.repository;
 
-import com.sparta.schedule.domain.user.dto.UserSignUpReq;
+import com.sparta.schedule.domain.user.dto.request.UserSignUpReq;
 import com.sparta.schedule.domain.user.entity.User;
 import com.sparta.schedule.global.util.DateUtil;
 import org.springframework.jdbc.core.JdbcTemplate;
