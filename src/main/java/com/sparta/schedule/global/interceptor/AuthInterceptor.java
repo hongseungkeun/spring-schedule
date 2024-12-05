@@ -12,11 +12,11 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        HttpSession session = request.getSession(false);
-
         if (HttpMethod.GET.matches(request.getMethod())) {
             return true;
         }
+
+        HttpSession session = request.getSession(false);
 
         if (session == null || session.getAttribute(SessionUtil.SESSION_KEY) == null) {
             throw new AuthFailedException(ErrorCode.AUTH_FAILED);

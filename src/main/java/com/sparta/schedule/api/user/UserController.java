@@ -1,7 +1,7 @@
 package com.sparta.schedule.api.user;
 
-import com.sparta.schedule.domain.user.dto.UserLoginReq;
-import com.sparta.schedule.domain.user.dto.UserSignUpReq;
+import com.sparta.schedule.domain.user.dto.request.UserLoginReq;
+import com.sparta.schedule.domain.user.dto.request.UserSignUpReq;
 import com.sparta.schedule.domain.user.service.UserService;
 import com.sparta.schedule.global.util.SessionUtil;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,7 +1,7 @@
 package com.sparta.schedule.domain.user.service;
 
-import com.sparta.schedule.domain.user.dto.UserLoginReq;
-import com.sparta.schedule.domain.user.dto.UserSignUpReq;
+import com.sparta.schedule.domain.user.dto.request.UserLoginReq;
+import com.sparta.schedule.domain.user.dto.request.UserSignUpReq;
 import com.sparta.schedule.domain.user.entity.User;
 import com.sparta.schedule.domain.user.exception.AlreadyExistUserException;
 import com.sparta.schedule.domain.user.exception.UserNotFoundException;
