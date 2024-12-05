@@ -1,15 +1,16 @@
-use schedule;
+use
+schedule;
 drop table user;
 drop table schedule;
 
 create table user
 (
     user_id    bigint auto_increment primary key,
-    email      varchar(255)                       not null UNIQUE,
+    email      varchar(255)                       not null unique,
     password   varchar(255)                       not null,
     name       varchar(255)                       not null,
-    created_at datetime default CURRENT_TIMESTAMP not null,
-    updated_at datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP
+    created_at datetime default current_timestamp not null,
+    updated_at datetime default current_timestamp not null on update current_timestamp
 );
 
 create table schedule
