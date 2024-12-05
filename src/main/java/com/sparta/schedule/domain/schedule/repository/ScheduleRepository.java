@@ -6,6 +6,7 @@ import com.sparta.schedule.domain.schedule.dto.response.ScheduleReadDetailRes;
 import com.sparta.schedule.domain.schedule.entity.Schedule;
 import com.sparta.schedule.domain.schedule.exception.FailedToGeneratedKeyException;
 import com.sparta.schedule.domain.user.entity.User;
+import com.sparta.schedule.global.exception.error.ErrorCode;
 import com.sparta.schedule.global.util.DateUtil;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -55,7 +56,7 @@ public class ScheduleRepository {
 
         return Optional.ofNullable(keyHolder.getKey())
                 .map(Number::longValue)
-                .orElseThrow(() -> new FailedToGeneratedKeyException("생성된 키를 검색하지 못했습니다."));
+                .orElseThrow(() -> new FailedToGeneratedKeyException(ErrorCode.FAILED_TO_GENERATED_KEY));
     }
 
     public List<ScheduleReadDetailRes> findAllByUpdatedAtAndUserName(String updatedAt, Long id, Pageable pageable) {

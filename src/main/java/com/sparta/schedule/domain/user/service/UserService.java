@@ -6,6 +6,7 @@ import com.sparta.schedule.domain.user.entity.User;
 import com.sparta.schedule.domain.user.exception.AlreadyExistUserException;
 import com.sparta.schedule.domain.user.exception.UserNotFoundException;
 import com.sparta.schedule.domain.user.repository.UserRepository;
+import com.sparta.schedule.global.exception.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,17 +31,17 @@ public class UserService {
 
     public User findUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("유저가 존재하지 않습니다"));
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
     }
 
     private User findUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("유저가 존재하지 않습니다"));
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
     }
 
     private void isExistEmail(String email) {
         if (userRepository.existsByEmail(email)) {
-            throw new AlreadyExistUserException("이미 존재하는 이메일입니다.");
+            throw new AlreadyExistUserException(ErrorCode.ALREADY_EXIST_USER);
         }
     }
 }

@@ -1,7 +1,10 @@
 package com.sparta.schedule.domain.user.exception;
 
-public class LoginFailedException extends RuntimeException {
-    public LoginFailedException(String message) {
-        super(message);
+import com.sparta.schedule.global.exception.CustomRuntimeException;
+import com.sparta.schedule.global.exception.error.ErrorCode;
+
+public class LoginFailedException extends CustomRuntimeException {
+    public LoginFailedException(ErrorCode errorCode) {
+        super(errorCode);
     }
 }

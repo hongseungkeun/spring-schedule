@@ -7,6 +7,7 @@ import com.sparta.schedule.domain.schedule.entity.Schedule;
 import com.sparta.schedule.domain.schedule.exception.ScheduleNotFoundException;
 import com.sparta.schedule.domain.schedule.repository.ScheduleRepository;
 import com.sparta.schedule.domain.user.service.UserService;
+import com.sparta.schedule.global.exception.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class ScheduleService {
 
     private Schedule findScheduleById(Long scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new ScheduleNotFoundException("일정을 찾을 수 없습니다"));
+                .orElseThrow(() -> new ScheduleNotFoundException(ErrorCode.SCHEDULE_NOT_FOUND_EXCEPTION));
 
         schedule.setUser(userService.findUserById(schedule.getUser().getUserId()));
 

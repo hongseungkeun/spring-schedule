@@ -51,7 +51,7 @@ public class ScheduleController {
     @PatchMapping("/{scheduleId}")
     public ResponseEntity<Void> updateSchedule(
             @PathVariable final Long scheduleId,
-            @RequestBody final ScheduleUpdateReq request,
+            @RequestBody @Valid final ScheduleUpdateReq request,
             @LoginId final Long userId) {
 
         scheduleService.updateSchedule(scheduleId, request, userId);

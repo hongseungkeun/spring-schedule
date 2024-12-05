@@ -2,6 +2,7 @@ package com.sparta.schedule.domain.user.entity;
 
 import com.sparta.schedule.domain.user.exception.LoginFailedException;
 import com.sparta.schedule.global.exception.AuthFailedException;
+import com.sparta.schedule.global.exception.error.ErrorCode;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,13 +34,13 @@ public class User {
 
     public void isPossibleLogin(String password) {
         if (!this.password.equals(password)) {
-            throw new LoginFailedException("비밀번호가 일치하지 않습니다.");
+            throw new LoginFailedException(ErrorCode.LOGIN_FAILED);
         }
     }
 
     public void checkEqualId(Long id) {
         if (!this.userId.equals(id)) {
-            throw new AuthFailedException("권한이 없습니다.");
+            throw new AuthFailedException(ErrorCode.AUTH_FAILED);
         }
     }
 }
