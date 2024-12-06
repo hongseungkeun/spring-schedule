@@ -34,7 +34,7 @@ public class ScheduleRepository {
     private static final String WHERE = " WHERE ";
     private static final String OR = " OR ";
     private static final String CONDITION_UPDATED_AT = "? <= s.updated_at";
-    private static final String CONDITION_USER_NAME = "u.name = ?";
+    private static final String CONDITION_USER_ID = "u.user_id = ?";
     private static final String PAGINATION = " LIMIT ? OFFSET ?";
 
     private final JdbcTemplate jdbcTemplate;
@@ -80,7 +80,7 @@ public class ScheduleRepository {
                 queryBuilder.append(OR);
             }
 
-            queryBuilder.append(CONDITION_USER_NAME);
+            queryBuilder.append(CONDITION_USER_ID);
             queryArgs.add(id);
         }
 
