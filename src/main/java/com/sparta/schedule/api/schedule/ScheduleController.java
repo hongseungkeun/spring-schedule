@@ -1,15 +1,18 @@
 package com.sparta.schedule.api.schedule;
 
+import com.sparta.schedule.domain.schedule.dto.ScheduleValidationMessages;
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleCreateReq;
 import com.sparta.schedule.domain.schedule.dto.request.ScheduleUpdateReq;
 import com.sparta.schedule.domain.schedule.dto.response.ScheduleReadDetailRes;
 import com.sparta.schedule.domain.schedule.service.ScheduleService;
 import com.sparta.schedule.global.annotation.LoginId;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/schedules")
 @RequiredArgsConstructor
+@Validated
 public class ScheduleController {
     private final ScheduleService scheduleService;
 
@@ -36,7 +40,9 @@ public class ScheduleController {
 
     @GetMapping
     public ResponseEntity<List<ScheduleReadDetailRes>> readSchedules(
-            @RequestParam(required = false) final String updatedAt,
+            @RequestParam(required = false)
+            @Pattern(regexp = ScheduleValidationMessages.UPDATED_PATTERN_REG,
+                    message = ScheduleValidationMessages.UPDATED_PATTERN_MESSAGE) final String updatedAt,
             @RequestParam(required = false) final Long id,
             @PageableDefault final Pageable pageable) {
 
