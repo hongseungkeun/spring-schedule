@@ -32,7 +32,7 @@ public class ScheduleRepository {
     private static final String BY_ID = " WHERE schedule_id = ?";
     private static final String ORDER_BY_UPDATED_AT_DESC = " ORDER BY s.updated_at DESC";
     private static final String WHERE = " WHERE ";
-    private static final String OR = " OR ";
+    private static final String AND = " AND ";
     private static final String CONDITION_UPDATED_AT = "? <= s.updated_at";
     private static final String CONDITION_USER_ID = "u.user_id = ?";
     private static final String PAGINATION = " LIMIT ? OFFSET ?";
@@ -77,7 +77,7 @@ public class ScheduleRepository {
 
         if (!Objects.isNull(id)) {
             if (orFlag) {
-                queryBuilder.append(OR);
+                queryBuilder.append(AND);
             }
 
             queryBuilder.append(CONDITION_USER_ID);
