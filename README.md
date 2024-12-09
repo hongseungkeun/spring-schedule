@@ -23,7 +23,7 @@
 
 ## API 명세서
 
-- [REST Docs](src/main/resources/static/docs/index.html)
+- [REST Docs](http://localhost:63342/schedule/schedule.main/static/docs/index.html)
 
 ## ERD
 
@@ -139,7 +139,7 @@
         1. 잘못된 정보로 조회하려고 할 때
         2. 이미 삭제된 정보를 조회하려고 할 때
 
-### Lv 6. null 체크 및 특정 패턴에 대한 검증 수행`
+### Lv 6. null 체크 및 특정 패턴에 대한 검증 수행
 
 - 설명
     - 유효성 검사
