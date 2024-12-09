@@ -11,7 +11,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(CustomRuntimeException.class)
-    protected ResponseEntity<ErrorResponse> handleException(final CustomRuntimeException e) {
+    protected ResponseEntity<ErrorResponse> handleCustomException(final CustomRuntimeException e) {
         ErrorResponse response = new ErrorResponse(e.getErrorCode());
         return createResponseEntity(response);
     }
