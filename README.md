@@ -23,7 +23,7 @@
 
 ## API 명세서
 
-- [REST Docs](http://localhost:63342/schedule/schedule.main/static/docs/index.html)
+- [REST Docs](src/main/resources/static/docs/index.html)
 
 ## ERD
 
