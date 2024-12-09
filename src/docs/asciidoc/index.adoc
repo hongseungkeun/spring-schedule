@@ -1,0 +1,140 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= 일정 관리 앱 API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+
+== 유저
+
+=== 회원 가입
+
+==== 요청 구조
+
+include::{snippets}/user-signUp/http-request.adoc[]
+
+===== 요청 파라미터
+
+include::{snippets}/user-signUp/request-fields.adoc[]
+
+==== 응답 구조
+
+include::{snippets}/user-signUp/http-response.adoc[]
+
+=== 로그인
+
+==== 요청 구조
+
+include::{snippets}/user-login/http-request.adoc[]
+
+===== 요청 파라미터
+
+include::{snippets}/user-login/request-fields.adoc[]
+
+==== 응답 구조
+
+include::{snippets}/user-login/http-response.adoc[]
+
+== 일정
+
+=== 일정 등록
+
+==== 요청 구조
+
+include::{snippets}/schedule-create/http-request.adoc[]
+
+===== 요청 파라미터
+
+include::{snippets}/schedule-create/request-fields.adoc[]
+
+==== 응답 구조
+
+include::{snippets}/schedule-create/http-response.adoc[]
+
+=== 일정 단건 조회
+
+==== 요청 구조
+
+include::{snippets}/schedule-read/http-request.adoc[]
+
+===== 요청 파라미터
+
+include::{snippets}/schedule-read/path-parameters.adoc[]
+
+==== 응답 구조
+
+include::{snippets}/schedule-read/http-response.adoc[]
+
+===== 응답 파라미터
+
+include::{snippets}/schedule-read/response-fields.adoc[]
+
+=== 일정 전체 조회
+
+==== 요청 구조
+
+include::{snippets}/schedule-read-all/http-request.adoc[]
+
+===== 요청 파라미터
+
+include::{snippets}/schedule-read-all/query-parameters.adoc[]
+
+==== 응답 구조
+
+include::{snippets}/schedule-read-all/http-response.adoc[]
+
+===== 응답 파라미터
+
+include::{snippets}/schedule-read/response-fields.adoc[]
+
+=== 일정 전체 필터 검색 조회
+
+==== 요청 구조
+
+include::{snippets}/schedule-read-all-by-id-and-updated-at/http-request.adoc[]
+
+===== 요청 파라미터
+
+include::{snippets}/schedule-read-all-by-id-and-updated-at/query-parameters.adoc[]
+
+==== 응답 구조
+
+include::{snippets}/schedule-read-all-by-id-and-updated-at/http-response.adoc[]
+
+===== 응답 파라미터
+
+include::{snippets}/schedule-read-all-by-id-and-updated-at/response-fields.adoc[]
+
+=== 일정 수정
+
+==== 요청 구조
+
+include::{snippets}/schedule-update/http-request.adoc[]
+
+===== 요청 파라미터
+
+include::{snippets}/schedule-update/path-parameters.adoc[]
+include::{snippets}/schedule-update/request-fields.adoc[]
+
+==== 응답 구조
+
+include::{snippets}/schedule-update/http-response.adoc[]
+
+=== 일정 삭제
+
+==== 요청 구조
+
+include::{snippets}/schedule-delete/http-request.adoc[]
+
+===== 요청 파라미터
+
+include::{snippets}/schedule-delete/path-parameters.adoc[]
+
+==== 응답 구조
+
+include::{snippets}/schedule-delete/http-response.adoc[]
