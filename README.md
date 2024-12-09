@@ -1,6 +1,33 @@
 # 일정 관리 앱 만들기 과제
 
+일정을 관리할 수 있는 앱 API 만들기
+
 ## 프로젝트 목표
+
+- `SpringBoot`와 `REST API`의 기본적인 `CRUD` 작성
+- `3 Layer Architecture`의 목적에 맞게 개발
+- `JDBC`를 사용해 데이터베이스와의 연동
+
+## 주요 기능
+
+- 유저
+    - 유저는 회원가입, 로그인, 로그아웃을 할 수 있다.
+- 일정
+    - 전체
+        - 일정을 검색할 수 있다.
+            - 최근 수정일을 기준
+            - 유저와 수정일을 이용해 필터 검색이 가능하다.
+    - 유저
+        - 일정을 생성할 수 있다.
+        - 본인의 일정을 수정, 삭제할 수 있다.
+
+## API 명세서
+
+- [REST Docs](src/main/resources/static/docs/index.html)
+
+## ERD
+
+<img src="src/main/resources/static/db/erd.png"/>
 
 ## 기능 요구 사항
 
