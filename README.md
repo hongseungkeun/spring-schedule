@@ -23,7 +23,7 @@
 
 ## API 명세서
 
-- [REST Docs](src/main/resources/static/docs/index.html)
+- [REST Docs](https://hongseungkeun.github.io/spring-schedule/src/main/resources/static/docs/index.html)
 
 ## ERD
 
